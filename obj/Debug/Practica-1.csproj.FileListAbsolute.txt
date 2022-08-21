@@ -1,0 +1,8 @@
+C:\Users\agust\OneDrive - Universidad Rafael Landivar\URL\6) Segundo Ciclo 2022\Estructura de datos II\Practica-1\bin\Debug\Practica-1.exe.config
+C:\Users\agust\OneDrive - Universidad Rafael Landivar\URL\6) Segundo Ciclo 2022\Estructura de datos II\Practica-1\bin\Debug\Practica-1.exe
+C:\Users\agust\OneDrive - Universidad Rafael Landivar\URL\6) Segundo Ciclo 2022\Estructura de datos II\Practica-1\bin\Debug\Practica-1.pdb
+C:\Users\agust\OneDrive - Universidad Rafael Landivar\URL\6) Segundo Ciclo 2022\Estructura de datos II\Practica-1\obj\Debug\Practica-1.csproj.AssemblyReference.cache
+C:\Users\agust\OneDrive - Universidad Rafael Landivar\URL\6) Segundo Ciclo 2022\Estructura de datos II\Practica-1\obj\Debug\Practica-1.csproj.SuggestedBindingRedirects.cache
+C:\Users\agust\OneDrive - Universidad Rafael Landivar\URL\6) Segundo Ciclo 2022\Estructura de datos II\Practica-1\obj\Debug\Practica-1.csproj.CoreCompileInputs.cache
+C:\Users\agust\OneDrive - Universidad Rafael Landivar\URL\6) Segundo Ciclo 2022\Estructura de datos II\Practica-1\obj\Debug\Practica-1.exe
+C:\Users\agust\OneDrive - Universidad Rafael Landivar\URL\6) Segundo Ciclo 2022\Estructura de datos II\Practica-1\obj\Debug\Practica-1.pdb
