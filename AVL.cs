@@ -10,16 +10,65 @@ namespace Practica_1
     {
         private Nodo<T> raiz;
         public List<T> lista;
+        public List <T> listaBusqueda;
         public int altura = 0;
 
         public AVL()
         {
             raiz = null;
             lista = new List<T>();
+            listaBusqueda = new List<T>();
         }
         public Nodo<T> obtenerRaiz()
         {
             return raiz;
+        }
+
+        //Búsqueda
+        public void buscar(Nodo<T> buscado, Delegate delegado1)
+        {
+            //listaBusqueda.Clear();
+            Nodo<T> aux = busqueda(raiz, delegado1, buscado);
+            if (aux == null || buscado.valor == null)
+            {
+                listaBusqueda.Clear();
+            }
+            else
+            {
+                listaBusqueda.Add(busqueda(raiz, delegado1, buscado).valor);
+            }
+
+        }
+
+        public Nodo<T> busqueda(Nodo<T> aux, Delegate delegado1, Nodo<T> buscado)
+        {
+            Nodo<T> resultado = null;
+            if (aux == null || buscado.valor == null)
+            {
+                resultado = null;
+            }
+            else
+            {
+                if (Convert.ToInt32(delegado1.DynamicInvoke(aux.valor, buscado.valor)) == 0)
+                {
+                    resultado = aux;
+                }
+                else
+                {
+                    if (Convert.ToInt32(delegado1.DynamicInvoke(buscado.valor, aux.valor)) < 0)
+                    {
+                        resultado = busqueda(aux.nodoIzq, delegado1, buscado);
+                    }
+                    else
+                    {
+                        if (Convert.ToInt32(delegado1.DynamicInvoke(buscado.valor, aux.valor)) > 0)
+                        {
+                            resultado = busqueda(aux.nodoDer, delegado1, buscado);
+                        }
+                    }
+                }
+            }
+            return resultado;
         }
 
         //Obtener el Factor de equilibrio
@@ -119,7 +168,26 @@ namespace Practica_1
             }
             else
             {
-                Console.WriteLine("Nodo duplicado");
+                if (subArbol.nodoDer == null)
+                {
+                    subArbol.nodoDer = nuevo;
+                }
+                else
+                {
+
+                    subArbol.nodoDer = insertarAVL(nuevo, delegado1, subArbol.nodoDer);
+                    if (obtenerFE(subArbol.nodoDer) - obtenerFE(subArbol.nodoIzq) == 2)
+                    {
+                        if (Convert.ToInt32(delegado1.DynamicInvoke(nuevo.valor, subArbol.nodoDer.valor)) > 0)
+                        {
+                            nuevoPadre = rotacionSimpleDerecha(subArbol);
+                        }
+                        else
+                        {
+                            nuevoPadre = rotacionDobleDerecha(subArbol);
+                        }
+                    }
+                }
             }
             //Actualizando la altura FE
             if((subArbol.nodoIzq == null) && (subArbol.nodoDer != null)) {
