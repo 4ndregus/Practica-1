@@ -10,6 +10,8 @@ namespace Practica_1
     {
         private Nodo<T> raiz;
         public List<T> lista;
+        public int altura = 0;
+
         public AVL()
         {
             raiz = null;
@@ -19,25 +21,6 @@ namespace Practica_1
         {
             return raiz;
         }
-
-        //Buscar
-        //public Nodo<T> buscar(int valor, Nodo<T> r)
-        //{
-        //    if(raiz == null)
-        //    {
-        //        return null;
-        //    }else if(r.valor == valor)
-        //    {
-        //        return r;
-        //    }else if(r.valor < valor)
-        //    {
-        //        return buscar(valor, r.nodoDer);
-        //    }
-        //    else
-        //    {
-        //        return buscar(valor, r.nodoIzq);
-        //    }
-        //}
 
         //Obtener el Factor de equilibrio
         public int obtenerFE(Nodo<T> x)
@@ -185,5 +168,130 @@ namespace Practica_1
             }
         }
 
+        private int getFE(Nodo<T> actual)
+        {
+            if (actual == null)
+            {
+                return 0;
+            }
+
+            return Altura(actual.nodoIzq) - Altura(actual.nodoDer);
+        }
+
+        //Altura del árbol
+        private int Altura(Nodo<T> actual)
+        {
+            if (actual == null)
+            {
+                return 0;
+            }
+
+            return actual.FE;
+        }
+
+        private Nodo<T> NodoConValorMax(Nodo<T> nodo)
+        {
+            Nodo<T> actual = nodo;
+            while (actual.nodoDer != null)
+            {
+                actual = actual.nodoDer;
+            }
+
+            return actual;
+        }
+
+        public void eliminar(T valor, Delegate delegado1)
+        {
+            raiz = eliminarAVL(raiz, delegado1, valor);
+            inOrder(raiz);
+        }
+
+        private Nodo<T> eliminarAVL(Nodo<T> actual, Delegate delegado1, T valor)
+        {
+            if (actual == null)
+            {
+                return actual;
+            }
+
+            if (Convert.ToInt32(delegado1.DynamicInvoke(valor, actual.valor)) < 0)
+            {
+                actual.nodoIzq = eliminarAVL(actual.nodoIzq, delegado1, valor);
+            }
+            else if (Convert.ToInt32(delegado1.DynamicInvoke(valor, actual.valor)) > 0)
+            {
+                actual.nodoDer = eliminarAVL(actual.nodoDer, delegado1, valor);
+            }
+            else
+            {
+                //El nodo es igual al elemento y se elimina
+                //Nodo con un único hijo o es hoja
+                if ((actual.nodoIzq == null) || (actual.nodoDer == null))
+                {
+                    Nodo<T> temp = null;
+                    if (temp == actual.nodoIzq)
+                    {
+                        temp = actual.nodoDer;
+                    }
+                    else
+                    {
+                        temp = actual.nodoIzq;
+                    }
+
+                    //No tiene hijos
+                    if (temp == null)
+                    {
+                        actual = null; //Se elmina poniéndolo en null
+                    }
+                    else
+                    {
+                        actual = temp; //Elimina el valor actual reemplazándolo por su hijo
+                    }
+                }
+                else
+                {
+                    //Nodo con dos hijos, se busca el predecesor
+                    Nodo<T> temp = NodoConValorMax(actual.nodoIzq);
+
+                    //Se copia el dato del predecesor
+                    actual.valor = temp.valor;
+
+                    //Se elimina el predecesor
+                    actual.nodoIzq = eliminarAVL(actual.nodoIzq, delegado1, temp.valor);
+                }
+            }
+            //Si solo tiene un nodo
+            if (actual == null)
+            {
+                return actual;
+            }
+
+            //Actualiza altura
+            actual.FE = Math.Max(Altura(actual.nodoIzq), Altura(actual.nodoDer)) + 1;
+
+            int FE = getFE(actual);
+            altura = FE;
+            if (FE > 1 && getFE(actual.nodoIzq) >= 0)
+            {
+                return rotacionSimpleDerecha(actual);
+            }
+
+            if (FE < -1 && getFE(actual.nodoDer) <= 0)
+            {
+                return rotacionSimpleIzquierda(actual);
+            }
+
+            if (FE > 1 && getFE(actual.nodoIzq) < 0)
+            {
+                actual.nodoIzq = rotacionSimpleIzquierda(actual.nodoIzq);
+                return rotacionSimpleDerecha(actual);
+            }
+
+            if (FE < -1 && getFE(actual.nodoDer) > 0)
+            {
+                actual.nodoDer = rotacionSimpleDerecha(actual.nodoDer);
+                return rotacionSimpleIzquierda(actual);
+            }
+            return actual;
+        }
     }
 }

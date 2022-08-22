@@ -26,6 +26,11 @@ namespace Practica_1
         {
             return persona1.name.CompareTo(persona2.name);
         };
-   
+
+        public Comparison<Persona> CompararDpi = delegate (Persona persona1, Persona persona2)
+        {
+            return persona1.dpi.CompareTo(persona2.dpi);
+        };
+
     }
 }
