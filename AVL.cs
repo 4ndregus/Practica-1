@@ -173,12 +173,6 @@ namespace Practica_1
         {
             lista.Clear();
             Recorrido(r);
-            //if (r != null)
-            //{
-            //    inOrder(r.nodoIzq);
-            //    Console.Write(r.valor + ", ");
-            //    inOrder(r.nodoDer);
-            //}
         }
 
         public void Recorrido(Nodo<T> r)

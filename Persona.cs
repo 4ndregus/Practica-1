@@ -13,6 +13,7 @@ namespace Practica_1
         public string datebirth { get; set; }
         public string address { get; set; }
 
+        
         public Persona(string name, string dpi, string datebirth, string address)
         {
             this.name = name;

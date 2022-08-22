@@ -1,3 +1,3 @@
-name, dpi, datebirth, address
-julio, 13709876, 04-01-2002, guatemala
-cesar, 97359368, 10-09-2004, guatemala
+INSERT; {"name":"Julio","dpi":"8456372891345","datebirth":"04-01-2002","address":"guatemala"}
+HOLA; {"name":"Melissa","dpi":"5124743685299","datebirth":"01-09-2010","address":"guatemala"}
+INSERT; {"name":"Cesar","dpi":"2826835385785","datebirth":"10-09-2004","address":"guatemala"}

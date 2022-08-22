@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace Practica_1
@@ -14,14 +15,18 @@ namespace Practica_1
             System.IO.StreamReader archivo = new System.IO.StreamReader(ubicacionArchivo);
             string linea;
 
-            archivo.ReadLine();
             AVL<Persona> arbolAVL = new AVL<Persona>();
             while ((linea = archivo.ReadLine()) != null)
             {
-                string[] fila = linea.Split(','); //Separador
+                string[] fila = linea.Split(';'); //Separador
 
-                Persona nuevaPersona = new Persona(fila[0], fila[1], fila[2], fila[3]);
-                arbolAVL.insertar(nuevaPersona, nuevaPersona.CompararNombre);
+                if (fila[0] == "INSERT")
+                {
+                    string json = fila[1];
+                    Persona nuevaPersona = JsonSerializer.Deserialize<Persona>(json);
+                    arbolAVL.insertar(nuevaPersona, nuevaPersona.CompararNombre);
+                }
+                
             }
 
             foreach (var a in arbolAVL.lista)
