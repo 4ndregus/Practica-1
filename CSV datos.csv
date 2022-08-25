@@ -1,7 +1,9 @@
 INSERT; {"name":"Julio","dpi":"8456372891345","datebirth":"04-01-2002","address":"guatemala"}
 INSERT; {"name":"Melissa","dpi":"5124743685299","datebirth":"01-09-2010","address":"guatemala"}
 INSERT; {"name":"Cesar","dpi":"2826835385785","datebirth":"10-09-2004","address":"guatemala"}
-INSERT; {"name":"Cesar","dpi":"9966434329323","datebirth":"15-10-2000","address":"guatemala"}
 INSERT; {"name":"Melissa","dpi":"1010436389214","datebirth":"08-12-1990","address":"guatemala"}
+INSERT; {"name":"Melissa","dpi":"9999999999999","datebirth":"08-12-1990","address":"guatemala"}
 DELETE; {"name":"Julio","dpi":"8456372891345"}
-PATCH; {"name":"Melissa","dpi":"2826835385785"}
+PATCH; {"name":"Melissa","dpi":"5124743685299","datebirth":"05-05-2005","address":"guatemala"}
+DELETE; {"name":"Melissa","dpi":"5124743685299"}
+DELETE; {"name":"Cesar","dpi":"2826835385785"}

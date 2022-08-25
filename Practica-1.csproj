@@ -74,6 +74,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AVL.cs" />
+    <Compile Include="AVL2.cs" />
     <Compile Include="Nodo.cs" />
     <Compile Include="Persona.cs" />
     <Compile Include="Program.cs" />

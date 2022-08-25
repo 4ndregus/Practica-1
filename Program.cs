@@ -12,11 +12,11 @@ namespace Practica_1
     {
         public static void Main(string[] args)
         {
-            string ubicacionArchivo = "C:\\Users\\agust\\OneDrive - Universidad Rafael Landivar\\URL\\6) Segundo Ciclo 2022\\Estructura de datos II\\Practica-1\\CSV datos.csv";
+            string ubicacionArchivo = "C:\\Users\\agust\\OneDrive - Universidad Rafael Landivar\\URL\\6) Segundo Ciclo 2022\\Estructura de datos II\\Practica-1\\input.csv";
             System.IO.StreamReader archivo = new System.IO.StreamReader(ubicacionArchivo);
             string linea;
 
-            AVL<Persona> AVLNombre = new AVL<Persona>();
+            //Linea 108 archivo input
             AVL<Persona> AVLDpi = new AVL<Persona>();
             while ((linea = archivo.ReadLine()) != null)
             {
@@ -26,7 +26,6 @@ namespace Practica_1
                 {
                     string json = fila[1];
                     Persona nuevaPersona = JsonSerializer.Deserialize<Persona>(json);
-                    AVLNombre.insertar(nuevaPersona, nuevaPersona.CompararNombre);
                     AVLDpi.insertar(nuevaPersona, nuevaPersona.CompararDpi);
                 }
                 if (fila[0] == "DELETE")
@@ -34,40 +33,32 @@ namespace Practica_1
                     string json = fila[1];
                     Persona nuevaPersona = JsonSerializer.Deserialize<Persona>(json);
                     AVLDpi.eliminar(nuevaPersona, nuevaPersona.CompararDpi);
-                    AVLNombre.eliminar(nuevaPersona, nuevaPersona.CompararDpi);                  
-                }     
+                }
                 if (fila[0] == "PATCH")
                 {
                     string json = fila[1];
                     Persona nuevaPersona = JsonSerializer.Deserialize<Persona>(json);
                     Nodo<Persona> nuevoNodo = new Nodo<Persona>();
-                    nuevoNodo.valor = nuevaPersona;                  
-                    AVLNombre.buscar(nuevoNodo, nuevaPersona.CompararNombre);
+                    nuevoNodo.valor = nuevaPersona;
+                    AVLDpi.modificar(nuevoNodo, nuevaPersona.CompararDpi);
+                    AVLDpi.buscar2(nuevoNodo, nuevaPersona.CompararNombre);
 
-                    AVLNombre.listaBusqueda.Add(nuevaPersona);
-                    //string jsonl = JsonSerializer.Serialize(AVLNombre.listaBusqueda);
-                    List<string> listaJsonl = new List<string>();
-                    string jsonll = JsonSerializer.Serialize(nuevaPersona);
-                    listaJsonl.Add(jsonll);
-                    //File.WriteAllText($"{nuevaPersona.name}.jsonl", jsonl);
-                    for (int i = 0; i < AVLNombre.listaBusqueda.Count; i++)
-                    {
-                        string jsonl = JsonSerializer.Serialize(AVLNombre.listaBusqueda[i]);
-                        File.WriteAllText($"{nuevaPersona.name}.jsonl", jsonl);
-                    }
-                    //foreach (var a in listaJsonl)
+                    string jsonl = JsonSerializer.Serialize(AVLDpi.listaBusqueda);
+                    File.WriteAllText($"{nuevaPersona.name}.jsonl", jsonl);
+
+                    //for (int i = 0; i < AVLDpi.listaBusqueda.Count; i++)
                     //{
+                    //    string jsonl = JsonSerializer.Serialize(AVLDpi.listaBusqueda[i]);
                     //    File.WriteAllText($"{nuevaPersona.name}.jsonl", jsonl);
-                    //}               
+                    //}                          
 
                 }
             }
 
-            foreach (var a in AVLNombre.lista)
+            foreach (var a in AVLDpi.lista)
             {
                 Console.WriteLine($"Name: {a.name} DPI: {a.dpi} Datebirth: {a.datebirth} Address: {a.address}");
             }
-
             Console.ReadKey();
         }
 
