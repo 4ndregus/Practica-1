@@ -11,19 +11,12 @@ namespace Practica_1
         public T valor;
         public int FE;
         public Nodo<T> nodoIzq, nodoDer;
-        //public Nodo()
-        //{
-        //    FE = 0;
-        //    nodoIzq = null;
-        //    nodoDer = null;
-        //}
-
-        public Nodo()
+        public Nodo(T valor)
         {
-            FE = 0;
+            FE = 1;
             nodoIzq = null;
             nodoDer = null;
-            //this.valor = valor;
+            this.valor = valor;
         }
     }
 }

@@ -10,7 +10,7 @@ namespace Practica_1
     {
         private Nodo<T> raiz;
         public List<T> lista;
-        public List <T> listaBusqueda;
+        public List<T> listaBusqueda;
         public int altura = 0;
 
         public AVL()
@@ -19,27 +19,8 @@ namespace Practica_1
             lista = new List<T>();
             listaBusqueda = new List<T>();
         }
-        public Nodo<T> obtenerRaiz()
-        {
-            return raiz;
-        }
 
-        //Búsqueda
-        public void buscar(Nodo<T> buscado, Delegate delegado1)
-        {
-            //listaBusqueda.Clear();
-            Nodo<T> aux = busqueda(raiz, delegado1, buscado);
-            if (aux == null || buscado.valor == null)
-            {
-                listaBusqueda.Clear();
-            }
-            else
-            {
-                listaBusqueda.Add(busqueda(raiz, delegado1, buscado).valor);
-                
-            }
-        }
-
+        //Modificar
         public void modificar(Nodo<T> buscado, Delegate delegado1)
         {
             Nodo<T> aux = busqueda(raiz, delegado1, buscado);
@@ -52,6 +33,81 @@ namespace Practica_1
                 aux.valor = buscado.valor;
             }
             inOrder(raiz);
+        }
+
+        //Insertar
+        public void insertar(T valor, Delegate delegado1)
+        {
+            raiz = insertarAVL(raiz, valor, delegado1);
+            inOrder(raiz);
+        }
+
+        //Eliminar
+        public void eliminar(T valor, Delegate delegado1)
+        {
+            raiz = eliminarAVL(raiz, delegado1, valor);
+            inOrder(raiz);
+        }
+
+        //Altura del árbol
+        private int Altura(Nodo<T> actual)
+        {
+            if (actual == null)
+            {
+                return 0;
+            }
+            return actual.FE;
+        }
+
+        //Obtener Factor de Equilibrio
+        private int obtenerFE(Nodo<T> actual)
+        {
+            if (actual == null)
+            {
+                return 0;
+            }
+            return Altura(actual.nodoIzq) - Altura(actual.nodoDer);
+        }
+
+        //Rotaciones
+        public Nodo<T> rotacionSimpleIzquierda(Nodo<T> A)
+        {
+            Nodo<T> aux = A.nodoDer;
+            Nodo<T> aux2 = aux.nodoIzq;
+            aux.nodoIzq = A;
+            A.nodoDer = aux2;
+
+            A.FE = Math.Max(Altura(A.nodoIzq), Altura(A.nodoDer)) + 1;
+            aux.FE = Math.Max(Altura(aux.nodoIzq), Altura(aux.nodoDer)) + 1;
+            return aux;
+        }
+
+        public Nodo<T> rotacionSimpleDerecha(Nodo<T> A)
+        {
+            Nodo<T> aux = A.nodoIzq;
+            Nodo<T> aux2 = aux.nodoDer;
+            aux.nodoDer = A;
+            A.nodoIzq = aux2;
+
+            A.FE = Math.Max(Altura(A.nodoIzq), Altura(A.nodoDer)) + 1;
+            aux.FE = Math.Max(Altura(aux.nodoIzq), Altura(aux.nodoDer)) + 1;
+            return aux;
+        }
+
+        public Nodo<T> rotacionDobleIzquierda(Nodo<T> A)
+        {
+            Nodo<T> aux;
+            A.nodoDer = rotacionSimpleDerecha(A.nodoDer);
+            aux = rotacionSimpleIzquierda(A);
+            return aux;
+        }
+
+        public Nodo<T> rotacionDobleDerecha(Nodo<T> A)
+        {
+            Nodo<T> aux;
+            A.nodoIzq = rotacionSimpleIzquierda(A.nodoIzq);
+            aux = rotacionSimpleDerecha(A);
+            return aux;
         }
 
         public Nodo<T> busqueda(Nodo<T> aux, Delegate delegado1, Nodo<T> buscado)
@@ -75,160 +131,70 @@ namespace Practica_1
                 {
                     resultado = busqueda(aux.nodoDer, delegado1, buscado);
                 }
-           
+
             }
             return resultado;
         }
 
-
-        //Obtener el Factor de equilibrio
-        public int obtenerFE(Nodo<T> x)
+        //Búsqueda
+        public void buscarr(Nodo<T> buscado, Delegate delegado1)
         {
-            if (x == null)
+            Nodo<T> aux = busqueda(raiz, delegado1, buscado);
+            if (aux == null || buscado.valor == null)
             {
-                return -1;
+                listaBusqueda.Clear();
             }
             else
             {
-                return x.FE;
+                listaBusqueda.Add(busqueda(raiz, delegado1, buscado).valor);
             }
         }
 
-        //Rotaciones
-        public Nodo<T> rotacionSimpleIzquierda(Nodo<T> A)
+        public Nodo<T> insertarAVL(Nodo<T> actual, T valor, Delegate delegado1)
         {
-            Nodo<T> aux = A.nodoIzq;
-            A.nodoIzq = aux.nodoDer;
-            aux.nodoDer = A;
-            A.FE = Math.Max(obtenerFE(A.nodoIzq), obtenerFE(A.nodoDer)) + 1;
-            aux.FE = Math.Max(obtenerFE(aux.nodoIzq), obtenerFE(aux.nodoDer)) + 1;
-            return aux;
-
-        }
-
-        public Nodo<T> rotacionSimpleDerecha(Nodo<T> A)
-        {
-            Nodo<T> aux = A.nodoDer;
-            A.nodoDer = aux.nodoIzq;
-            aux.nodoIzq = A;
-            A.FE = Math.Max(obtenerFE(A.nodoIzq), obtenerFE(A.nodoDer)) + 1;
-            aux.FE = Math.Max(obtenerFE(aux.nodoIzq), obtenerFE(aux.nodoDer)) + 1;
-            return aux;
-
-        }
-
-        public Nodo<T> rotacionDobleIzquierda(Nodo<T> A)
-        {
-            Nodo<T> aux;
-            A.nodoIzq = rotacionSimpleDerecha(A.nodoIzq);
-            aux = rotacionSimpleIzquierda(A);
-            return aux;
-        }
-
-        public Nodo<T> rotacionDobleDerecha(Nodo<T> A)
-        {
-            Nodo<T> aux;
-            A.nodoDer = rotacionSimpleIzquierda(A.nodoDer);
-            aux = rotacionSimpleDerecha(A);
-            return aux;
-        }
-
-        public Nodo<T> insertarAVL(Nodo<T> nuevo, Delegate delegado1, Nodo<T> subArbol)
-        {
-            Nodo<T> nuevoPadre = subArbol;
-            if(Convert.ToInt32(delegado1.DynamicInvoke(nuevo.valor, subArbol.valor)) < 0)
+            if (actual == null)
             {
-                if (subArbol.nodoIzq == null)
-                {
-                    subArbol.nodoIzq = nuevo;
-                }
-                else
-                {
-                    subArbol.nodoIzq = insertarAVL(nuevo, delegado1, subArbol.nodoIzq);
-                    if (obtenerFE(subArbol.nodoIzq) - obtenerFE(subArbol.nodoDer) == 2)
-                    {
-                        if (Convert.ToInt32(delegado1.DynamicInvoke(nuevo.valor, subArbol.nodoIzq.valor)) < 0)
-                        {
-                            nuevoPadre = rotacionSimpleIzquierda(subArbol);
-                        }
-                        else
-                        {
-                            nuevoPadre = rotacionDobleIzquierda(subArbol);
-                        }
-                    }
-                }
+                return new Nodo<T>(valor);
             }
-            else if (Convert.ToInt32(delegado1.DynamicInvoke(nuevo.valor, subArbol.valor)) > 0)
+            if (Convert.ToInt32(delegado1.DynamicInvoke(valor, actual.valor)) < 0)
             {
-                if (subArbol.nodoDer == null)
-                {
-                    subArbol.nodoDer = nuevo;
-                }
-                else {
-
-                    subArbol.nodoDer = insertarAVL(nuevo, delegado1, subArbol.nodoDer);
-                    if(obtenerFE(subArbol.nodoDer) - obtenerFE(subArbol.nodoIzq) == 2)
-                    {
-                        if (Convert.ToInt32(delegado1.DynamicInvoke(nuevo.valor, subArbol.nodoDer.valor)) > 0)
-                        {
-                            nuevoPadre = rotacionSimpleDerecha(subArbol);
-                        } else{
-                            nuevoPadre = rotacionDobleDerecha(subArbol);
-                        }
-                    }
-                }
+                actual.nodoIzq = insertarAVL(actual.nodoIzq, valor, delegado1);
+            }
+            else if (Convert.ToInt32(delegado1.DynamicInvoke(valor, actual.valor)) > 0)
+            {
+                actual.nodoDer = insertarAVL(actual.nodoDer, valor, delegado1);
             }
             else
             {
-                if (subArbol.nodoDer == null)
-                {
-                    subArbol.nodoDer = nuevo;
-                }
-                else
-                {
-
-                    subArbol.nodoDer = insertarAVL(nuevo, delegado1, subArbol.nodoDer);
-                    if (obtenerFE(subArbol.nodoDer) - obtenerFE(subArbol.nodoIzq) == 2)
-                    {
-                        if (Convert.ToInt32(delegado1.DynamicInvoke(nuevo.valor, subArbol.nodoDer.valor)) > 0)
-                        {
-                            nuevoPadre = rotacionSimpleDerecha(subArbol);
-                        }
-                        else
-                        {
-                            nuevoPadre = rotacionDobleDerecha(subArbol);
-                        }
-                    }
-                }
-            }
-            //Actualizando la altura FE
-            if((subArbol.nodoIzq == null) && (subArbol.nodoDer != null)) {
-                subArbol.FE = subArbol.nodoDer.FE + 1;
-            }else if((subArbol.nodoDer == null) && (subArbol.nodoIzq != null)) {
-                subArbol.FE = subArbol.nodoIzq.FE + 1;
-            }else {
-                subArbol.FE = Math.Max(obtenerFE(subArbol.nodoIzq), obtenerFE(subArbol.nodoDer));
+                return actual;
             }
 
-            return nuevoPadre;
-        }
+            actual.FE = 1 + Math.Max(Altura(actual.nodoIzq), Altura(actual.nodoDer));
 
-        //Insertar
-        public void insertar(T valor, Delegate delegado1)
-        {
-            Nodo<T> nuevo = new Nodo<T>(); //Change
-            nuevo.valor = valor;
-            nuevo.nodoIzq = null;
-            nuevo.nodoDer = null;
-            if (raiz == null)
+            int FE = obtenerFE(actual);
+
+            if (FE > 1 && Convert.ToInt32(delegado1.DynamicInvoke(valor, actual.nodoIzq.valor)) < 0)
             {
-                raiz = nuevo;
+                return rotacionSimpleDerecha(actual);
             }
-            else
+            if (FE < -1 && Convert.ToInt32(delegado1.DynamicInvoke(valor, actual.nodoDer.valor)) > 0)
             {
-                raiz = insertarAVL(nuevo, delegado1, raiz);
+                return rotacionSimpleIzquierda(actual);
             }
-            inOrder(raiz);
+            if (FE > 1 && Convert.ToInt32(delegado1.DynamicInvoke(valor, actual.nodoIzq.valor)) > 0)
+            {
+                //actual.nodoIzq = rotacionSimpleIzquierda(actual.nodoIzq);
+                //return rotacionSimpleDerecha(actual);
+                return rotacionDobleDerecha(actual);
+            }
+            if (FE < -1 && Convert.ToInt32(delegado1.DynamicInvoke(valor, actual.nodoDer.valor)) < 0)
+            {
+                //actual.nodoDer = rotacionSimpleDerecha(actual.nodoDer);
+                //return rotacionSimpleIzquierda(actual);
+                return rotacionDobleIzquierda(actual);
+            }
+
+            return actual;
         }
 
         //Recorridos
@@ -237,17 +203,6 @@ namespace Practica_1
             lista.Clear();
             Recorrido(r);
         }
-
-        public void buscar2(Nodo<T> r, Delegate delegado1)
-        {
-            for(int i = 0; i < lista.Count; i++)
-            {
-                if(lista != null && Convert.ToInt32(delegado1.DynamicInvoke(lista[i], r.valor)) == 0) {
-                    listaBusqueda.Add(lista[i]);
-                }
-            }
-        }
-
         public void Recorrido(Nodo<T> r)
         {
             if (r != null)
@@ -257,26 +212,16 @@ namespace Practica_1
                 Recorrido(r.nodoDer);
             }
         }
-
-        private int getFE(Nodo<T> actual)
+        public void buscar(Nodo<T> r, Delegate delegado1)
         {
-            if (actual == null)
+            listaBusqueda.Clear();
+            for (int i = 0; i < lista.Count; i++)
             {
-                return 0;
+                if (lista != null && Convert.ToInt32(delegado1.DynamicInvoke(lista[i], r.valor)) == 0)
+                {
+                    listaBusqueda.Add(lista[i]);
+                }
             }
-
-            return Altura(actual.nodoIzq) - Altura(actual.nodoDer);
-        }
-
-        //Altura del árbol
-        private int Altura(Nodo<T> actual)
-        {
-            if (actual == null)
-            {
-                return 0;
-            }
-
-            return actual.FE;
         }
 
         private Nodo<T> NodoConValorMin(Nodo<T> nodo)
@@ -290,17 +235,6 @@ namespace Practica_1
             return actual;
         }
 
-        public void eliminar(T valor, Delegate delegado1)
-        {
-            raiz = eliminarAVL(raiz, delegado1, valor);
-            inOrder(raiz);
-        }
-
-        private int height(Nodo<T> n)
-        {
-            return n == null ? -1 : n.FE;
-        }
-
         private Nodo<T> eliminarAVL(Nodo<T> actual, Delegate delegado1, T valor)
         {
             if (actual == null)
@@ -308,11 +242,11 @@ namespace Practica_1
                 return actual;
             }
 
-            if (Convert.ToInt32(delegado1.DynamicInvoke(valor, actual.valor)) > 0)
+            if (Convert.ToInt32(delegado1.DynamicInvoke(valor, actual.valor)) < 0)
             {
                 actual.nodoIzq = eliminarAVL(actual.nodoIzq, delegado1, valor);
             }
-            else if (Convert.ToInt32(delegado1.DynamicInvoke(valor, actual.valor)) < 0)
+            else if (Convert.ToInt32(delegado1.DynamicInvoke(valor, actual.valor)) > 0)
             {
                 actual.nodoDer = eliminarAVL(actual.nodoDer, delegado1, valor);
             }
@@ -336,7 +270,7 @@ namespace Practica_1
                     if (temp == null)
                     {
                         temp = actual;
-                        actual = null; //Se elimina poniéndolo en null
+                        actual = null; //Se elmina poniéndolo en null
                     }
                     else
                     {
@@ -346,13 +280,13 @@ namespace Practica_1
                 else
                 {
                     //Nodo con dos hijos, se busca el predecesor
-                    Nodo<T> temp = NodoConValorMin(actual.nodoDer);
+                    Nodo<T> temp = NodoConValorMin(actual.nodoIzq);
 
                     //Se copia el dato del predecesor
                     actual.valor = temp.valor;
 
                     //Se elimina el predecesor
-                    actual.nodoDer = eliminarAVL(actual.nodoDer, delegado1, temp.valor);
+                    actual.nodoIzq = eliminarAVL(actual.nodoIzq, delegado1, temp.valor);
                 }
             }
             //Si solo tiene un nodo
@@ -364,32 +298,34 @@ namespace Practica_1
             //Actualiza altura
             actual.FE = Math.Max(Altura(actual.nodoIzq), Altura(actual.nodoDer)) + 1;
 
-            int FE = getFE(actual);
+            int FE = obtenerFE(actual);
 
-            if (FE > 1 && getFE(actual.nodoIzq) >= 0)
-            {
-                return rotacionSimpleIzquierda(actual);
-                
-            }
-
-            if (FE < -1 && getFE(actual.nodoDer) <= 0)
+            if (FE > 1 && obtenerFE(actual.nodoIzq) >= 0)
             {
                 return rotacionSimpleDerecha(actual);
             }
 
-            if (FE > 1 && getFE(actual.nodoIzq) < 0)
+            if (FE > 1 && obtenerFE(actual.nodoIzq) < 0)
             {
-                actual.nodoDer = rotacionSimpleDerecha(actual.nodoDer);
-                return rotacionSimpleIzquierda(actual);
-                
+                //actual.nodoIzq = rotacionSimpleIzquierda(actual.nodoIzq);
+                //return rotacionSimpleDerecha(actual);
+                return rotacionDobleDerecha(actual);
             }
 
-            if (FE < -1 && getFE(actual.nodoDer) > 0)
+            if (FE < -1 && obtenerFE(actual.nodoDer) <= 0)
             {
-                actual.nodoIzq = rotacionSimpleIzquierda(actual.nodoIzq);
-                return rotacionSimpleDerecha(actual);
+                return rotacionSimpleIzquierda(actual);
             }
+
+            if (FE < -1 && obtenerFE(actual.nodoDer) > 0)
+            {
+                //actual.nodoDer = rotacionSimpleDerecha(actual.nodoDer);
+                //return rotacionSimpleIzquierda(actual);
+                return rotacionDobleIzquierda(actual);
+            }
+
             return actual;
         }
     }
 }
+
