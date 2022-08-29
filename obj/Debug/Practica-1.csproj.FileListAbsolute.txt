@@ -25,3 +25,5 @@ C:\Users\agust\OneDrive - Universidad Rafael Landivar\URL\6) Segundo Ciclo 2022\
 C:\Users\agust\OneDrive - Universidad Rafael Landivar\URL\6) Segundo Ciclo 2022\Estructura de datos II\Practica-1\bin\Debug\System.Threading.Tasks.Extensions.xml
 C:\Users\agust\OneDrive - Universidad Rafael Landivar\URL\6) Segundo Ciclo 2022\Estructura de datos II\Practica-1\bin\Debug\System.ValueTuple.xml
 C:\Users\agust\OneDrive - Universidad Rafael Landivar\URL\6) Segundo Ciclo 2022\Estructura de datos II\Practica-1\obj\Debug\Practica-1.csproj.CopyComplete
+C:\Users\agust\OneDrive - Universidad Rafael Landivar\URL\6) Segundo Ciclo 2022\Estructura de datos II\Practica-1\bin\Debug\Newtonsoft.Json.dll
+C:\Users\agust\OneDrive - Universidad Rafael Landivar\URL\6) Segundo Ciclo 2022\Estructura de datos II\Practica-1\bin\Debug\Newtonsoft.Json.xml

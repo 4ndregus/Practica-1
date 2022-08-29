@@ -39,13 +39,14 @@ namespace Practica_1
                     Persona nuevaPersona = JsonSerializer.Deserialize<Persona>(json);
                     Nodo<Persona> nuevoNodo = new Nodo<Persona>(nuevaPersona);
                     AVLDpi.modificar(nuevoNodo, nuevaPersona.CompararDpi);
-                    //AVLDpi.buscar(nuevoNodo, nuevaPersona.CompararNombre);
+                    AVLDpi.buscar(nuevoNodo, nuevaPersona.CompararNombre);
 
-
-
-
-                    string jsonl = JsonSerializer.Serialize(AVLDpi.listaBusqueda);
-                    File.WriteAllText($"{nuevaPersona.name}.jsonl", jsonl);                       
+                    //File.WriteAllText($"{nuevaPersona.name}.jsonl", "");
+                    //for (int i = 0; i < AVLDpi.listaBusqueda.Count(); i++)
+                    //{
+                    //    string jsonl = JsonSerializer.Serialize(AVLDpi.listaBusqueda[i]);
+                    //    File.AppendAllText($"{nuevaPersona.name}.jsonl", jsonl + Environment.NewLine);
+                    //}
 
                 }
             }
@@ -53,19 +54,18 @@ namespace Practica_1
             Nodo<Persona> nuevoNodo2 = new Nodo<Persona>(busqueda);
             AVLDpi.buscar(nuevoNodo2, busqueda.CompararNombre);
 
+            File.WriteAllText($"{busqueda.name}.jsonl", "");
+            for (int i = 0; i < AVLDpi.listaBusqueda.Count(); i++)
+            {
+                string jsonl = JsonSerializer.Serialize(AVLDpi.listaBusqueda[i]);
+                File.AppendAllText($"{busqueda.name}.jsonl", jsonl + Environment.NewLine);
+            }
+
             foreach (var a in AVLDpi.listaBusqueda)
             {
                 Console.WriteLine($"Name: {a.name} DPI: {a.dpi} Datebirth: {a.datebirth} Address: {a.address}");
             }
 
-            Persona busqueda2 = new Persona("vince", "", "", "");
-            Nodo<Persona> nuevoNodo3 = new Nodo<Persona>(busqueda2);
-            AVLDpi.buscar(nuevoNodo3, busqueda2.CompararNombre);
-
-            foreach (var a in AVLDpi.listaBusqueda)
-            {
-                Console.WriteLine($"Name: {a.name} DPI: {a.dpi} Datebirth: {a.datebirth} Address: {a.address}");
-            }
             Console.ReadKey();
         }
 
