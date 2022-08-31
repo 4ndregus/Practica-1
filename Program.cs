@@ -44,23 +44,44 @@ namespace Practica_1
                 }
             }
 
-            Persona busqueda = new Persona("ali", "", "", "");
+
+        buscar:
+            Console.Clear();
+            string name = "";
+            Console.Write("Ingrese su búsqueda: ");
+            name = Console.ReadLine();
+            
+            Persona busqueda = new Persona(name, "", "", "");
+            //Nodo<Persona> nodo = new Nodo<Persona>(busqueda);
             AVLDpi.buscar(busqueda, busqueda.CompararNombre);
 
-            File.WriteAllText($"{busqueda.name}.jsonl", "");
-            for (int i = 0; i < AVLDpi.listaBusqueda.Count(); i++)
+            if(AVLDpi.listaBusqueda.Count() == 0)
             {
-                string jsonl = JsonSerializer.Serialize(AVLDpi.listaBusqueda[i]);
-                File.AppendAllText($"{busqueda.name}.jsonl", jsonl + Environment.NewLine);
+                Console.WriteLine("Persona no encontrada");
             }
-
-            foreach (var a in AVLDpi.listaBusqueda)
+            else
             {
-                Console.WriteLine($"Name: {a.name} DPI: {a.dpi} Datebirth: {a.datebirth} Address: {a.address}");
+                Console.WriteLine("Persona encontrada");
+                Console.WriteLine("Búsqueda guardada");
+                //Exportar archivo jsonl
+                File.WriteAllText($"{busqueda.name}.jsonl", "");
+                for (int i = 0; i < AVLDpi.listaBusqueda.Count(); i++)
+                {
+                    string jsonl = JsonSerializer.Serialize(AVLDpi.listaBusqueda[i]);
+                    File.AppendAllText($"{busqueda.name}.jsonl", jsonl + Environment.NewLine);
+                }
             }
+            string opcion;
+            Console.WriteLine("\n¿Seguir buscando? s/n");
+            opcion = Console.ReadLine();
 
-            Console.WriteLine(AVLDpi.lista.Count());
-
+            if(opcion == "s" || opcion == "S")
+            {
+                goto buscar;
+            }
+            if(opcion == "n" || opcion == "N"){
+                Environment.Exit(0);
+            }
             Console.ReadKey();
         }
             

@@ -19,21 +19,6 @@ namespace Practica_1
             listaBusqueda = new List<T>();
         }
 
-        //Modificar
-        public void modificar(Nodo<T> buscado, Delegate delegado1)
-        {
-            Nodo<T> aux = busqueda(raiz, delegado1, buscado);
-            if (aux == null || buscado.valor == null)
-            {
-                listaBusqueda.Clear();
-            }
-            else
-            {
-                aux.valor = buscado.valor;
-            }
-            inOrder(raiz);
-        }
-
         //Insertar
         public void insertar(T valor, Delegate delegado1)
         {
@@ -109,6 +94,21 @@ namespace Practica_1
             return aux;
         }
 
+        //Modificar
+        public void modificar(Nodo<T> buscado, Delegate delegado1)
+        {
+            Nodo<T> aux = busqueda(raiz, delegado1, buscado);
+            if (aux == null || buscado.valor == null)
+            {
+                listaBusqueda.Clear();
+            }
+            else
+            {
+                aux.valor = buscado.valor;
+            }
+            inOrder(raiz);
+        }
+
         public Nodo<T> busqueda(Nodo<T> aux, Delegate delegado1, Nodo<T> buscado)
         {
             Nodo<T> resultado = null;
@@ -136,16 +136,16 @@ namespace Practica_1
         }
 
         //Búsqueda
-        public T buscarr(Nodo<T> buscado, Delegate delegado1, Nodo<T> dato2)
+        public void buscarr(Nodo<T> buscado, Delegate delegado1)
         {
             Nodo<T> aux = busqueda(raiz, delegado1, buscado);
             if (aux == null || buscado.valor == null)
             {
-                return dato2.valor;
+                listaBusqueda.Clear();
             }
             else
             {
-                return busqueda(raiz, delegado1, buscado).valor;
+                listaBusqueda.Add(busqueda(raiz, delegado1, buscado).valor);
             }
         }
 
@@ -182,15 +182,12 @@ namespace Practica_1
             }
             if (FE > 1 && Convert.ToInt32(delegado1.DynamicInvoke(valor, actual.nodoIzq.valor)) > 0)
             {
-                actual.nodoIzq = rotacionSimpleIzquierda(actual.nodoIzq);
-                return rotacionSimpleDerecha(actual);
-                //return rotacionDobleDerecha(actual);
+
+                return rotacionDobleDerecha(actual);
             }
             if (FE < -1 && Convert.ToInt32(delegado1.DynamicInvoke(valor, actual.nodoDer.valor)) < 0)
             {
-                actual.nodoDer = rotacionSimpleDerecha(actual.nodoDer);
-                return rotacionSimpleIzquierda(actual);
-                //return rotacionDobleIzquierda(actual);
+                return rotacionDobleIzquierda(actual);
             }
 
             return actual;
@@ -268,7 +265,7 @@ namespace Practica_1
                     if (temp == null)
                     {
                         temp = actual;
-                        actual = null; //Se elmina poniéndolo en null
+                        actual = null; 
                     }
                     else
                     {
@@ -280,10 +277,8 @@ namespace Practica_1
                     //Nodo con dos hijos, se busca el predecesor
                     Nodo<T> temp = NodoConValorMin(actual.nodoDer);
 
-                    //Se copia el dato del predecesor
                     actual.valor = temp.valor;
 
-                    //Se elimina el predecesor
                     actual.nodoDer = eliminarAVL(actual.nodoDer, delegado1, temp.valor);
                 }
             }
@@ -305,8 +300,6 @@ namespace Practica_1
 
             if (FE > 1 && obtenerFE(actual.nodoIzq) < 0)
             {
-                //actual.nodoIzq = rotacionSimpleIzquierda(actual.nodoIzq);
-                //return rotacionSimpleDerecha(actual);
                 return rotacionDobleDerecha(actual);
             }
 
@@ -317,8 +310,6 @@ namespace Practica_1
 
             if (FE < -1 && obtenerFE(actual.nodoDer) > 0)
             {
-                //actual.nodoDer = rotacionSimpleDerecha(actual.nodoDer);
-                //return rotacionSimpleIzquierda(actual);
                 return rotacionDobleIzquierda(actual);
             }
 
