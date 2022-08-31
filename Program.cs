@@ -49,8 +49,8 @@ namespace Practica_1
             Console.Clear();
             string name = "";
             Console.Write("Ingrese su búsqueda: ");
-            name = Console.ReadLine();
-            
+            name = Console.ReadLine().ToLower();
+           
             Persona busqueda = new Persona(name, "", "", "");
             //Nodo<Persona> nodo = new Nodo<Persona>(busqueda);
             AVLDpi.buscar(busqueda, busqueda.CompararNombre);
