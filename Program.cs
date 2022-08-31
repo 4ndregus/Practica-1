@@ -10,13 +10,14 @@ namespace Practica_1
 {
     public class Program
     {
+        public static AVL<Persona> AVLDpi;
         public static void Main(string[] args)
         {
             string ubicacionArchivo = "C:\\Users\\agust\\OneDrive - Universidad Rafael Landivar\\URL\\6) Segundo Ciclo 2022\\Estructura de datos II\\Practica-1\\input.csv";
             System.IO.StreamReader archivo = new System.IO.StreamReader(ubicacionArchivo);
             string linea;
 
-            AVL<Persona> AVLDpi = new AVL<Persona>();
+            AVLDpi = new AVL<Persona>();
             while ((linea = archivo.ReadLine()) != null)
             {
                 string[] fila = linea.Split(';'); //Separador
@@ -39,20 +40,12 @@ namespace Practica_1
                     Persona nuevaPersona = JsonSerializer.Deserialize<Persona>(json);
                     Nodo<Persona> nuevoNodo = new Nodo<Persona>(nuevaPersona);
                     AVLDpi.modificar(nuevoNodo, nuevaPersona.CompararDpi);
-                    AVLDpi.buscar(nuevoNodo, nuevaPersona.CompararNombre);
-
-                    //File.WriteAllText($"{nuevaPersona.name}.jsonl", "");
-                    //for (int i = 0; i < AVLDpi.listaBusqueda.Count(); i++)
-                    //{
-                    //    string jsonl = JsonSerializer.Serialize(AVLDpi.listaBusqueda[i]);
-                    //    File.AppendAllText($"{nuevaPersona.name}.jsonl", jsonl + Environment.NewLine);
-                    //}
 
                 }
             }
-            Persona busqueda = new Persona("liliana", "", "", "");
-            Nodo<Persona> nuevoNodo2 = new Nodo<Persona>(busqueda);
-            AVLDpi.buscar(nuevoNodo2, busqueda.CompararNombre);
+
+            Persona busqueda = new Persona("ali", "", "", "");
+            AVLDpi.buscar(busqueda, busqueda.CompararNombre);
 
             File.WriteAllText($"{busqueda.name}.jsonl", "");
             for (int i = 0; i < AVLDpi.listaBusqueda.Count(); i++)
@@ -66,9 +59,10 @@ namespace Practica_1
                 Console.WriteLine($"Name: {a.name} DPI: {a.dpi} Datebirth: {a.datebirth} Address: {a.address}");
             }
 
+            Console.WriteLine(AVLDpi.lista.Count());
+
             Console.ReadKey();
         }
-
-        
+            
     }
 }

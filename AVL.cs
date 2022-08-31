@@ -11,8 +11,7 @@ namespace Practica_1
         private Nodo<T> raiz;
         public List<T> lista;
         public List<T> listaBusqueda;
-        public int altura = 0;
-
+        public List<T> datoBusqueda;
         public AVL()
         {
             raiz = null;
@@ -137,16 +136,16 @@ namespace Practica_1
         }
 
         //Búsqueda
-        public void buscarr(Nodo<T> buscado, Delegate delegado1)
+        public T buscarr(Nodo<T> buscado, Delegate delegado1, Nodo<T> dato2)
         {
             Nodo<T> aux = busqueda(raiz, delegado1, buscado);
             if (aux == null || buscado.valor == null)
             {
-                listaBusqueda.Clear();
+                return dato2.valor;
             }
             else
             {
-                listaBusqueda.Add(busqueda(raiz, delegado1, buscado).valor);
+                return busqueda(raiz, delegado1, buscado).valor;
             }
         }
 
@@ -183,15 +182,15 @@ namespace Practica_1
             }
             if (FE > 1 && Convert.ToInt32(delegado1.DynamicInvoke(valor, actual.nodoIzq.valor)) > 0)
             {
-                //actual.nodoIzq = rotacionSimpleIzquierda(actual.nodoIzq);
-                //return rotacionSimpleDerecha(actual);
-                return rotacionDobleDerecha(actual);
+                actual.nodoIzq = rotacionSimpleIzquierda(actual.nodoIzq);
+                return rotacionSimpleDerecha(actual);
+                //return rotacionDobleDerecha(actual);
             }
             if (FE < -1 && Convert.ToInt32(delegado1.DynamicInvoke(valor, actual.nodoDer.valor)) < 0)
             {
-                //actual.nodoDer = rotacionSimpleDerecha(actual.nodoDer);
-                //return rotacionSimpleIzquierda(actual);
-                return rotacionDobleIzquierda(actual);
+                actual.nodoDer = rotacionSimpleDerecha(actual.nodoDer);
+                return rotacionSimpleIzquierda(actual);
+                //return rotacionDobleIzquierda(actual);
             }
 
             return actual;
@@ -212,12 +211,12 @@ namespace Practica_1
                 Recorrido(r.nodoDer);
             }
         }
-        public void buscar(Nodo<T> r, Delegate delegado1)
+        public void buscar(T valor, Delegate delegado1)
         {
             listaBusqueda.Clear();
             for (int i = 0; i < lista.Count; i++)
             {
-                if (lista != null && Convert.ToInt32(delegado1.DynamicInvoke(lista[i], r.valor)) == 0)
+                if (Convert.ToInt32(delegado1.DynamicInvoke(valor, lista[i])) == 0)
                 {
                     listaBusqueda.Add(lista[i]);
                 }
@@ -241,7 +240,6 @@ namespace Practica_1
             {
                 return actual;
             }
-
             if (Convert.ToInt32(delegado1.DynamicInvoke(valor, actual.valor)) < 0)
             {
                 actual.nodoIzq = eliminarAVL(actual.nodoIzq, delegado1, valor);
@@ -280,13 +278,13 @@ namespace Practica_1
                 else
                 {
                     //Nodo con dos hijos, se busca el predecesor
-                    Nodo<T> temp = NodoConValorMin(actual.nodoIzq);
+                    Nodo<T> temp = NodoConValorMin(actual.nodoDer);
 
                     //Se copia el dato del predecesor
                     actual.valor = temp.valor;
 
                     //Se elimina el predecesor
-                    actual.nodoIzq = eliminarAVL(actual.nodoIzq, delegado1, temp.valor);
+                    actual.nodoDer = eliminarAVL(actual.nodoDer, delegado1, temp.valor);
                 }
             }
             //Si solo tiene un nodo
