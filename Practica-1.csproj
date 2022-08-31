@@ -76,10 +76,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AVL.cs" />
-    <Compile Include="AVL2.cs" />
-    <Compile Include="Nodo.cs" />
-    <Compile Include="Persona.cs" />
+    <Compile Include="Estructura\AVL.cs" />
+    <Compile Include="Estructura\Nodo.cs" />
+    <Compile Include="Modelo\Persona.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
